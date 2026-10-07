@@ -3,10 +3,8 @@
  2) SEPOLIA/AMOY: set RPC_URL, PRIVATE_KEY (and CONTRACT_ADDRESS after first deploy) as environment variables.
 """
 import hashlib, json, os
-from pathlib import Path
 from web3 import Web3
-
-ART = json.loads((Path(__file__).parent / "contracts" / "CattleRegistry.json").read_text())
+from contract_data import ART
 
 
 def record_hash(payload: dict) -> str:
