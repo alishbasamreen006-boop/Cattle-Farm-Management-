@@ -11,19 +11,19 @@ def _hash(password, salt):
 def create_user(username, full_name, role, password):
     username = username.strip().lower()
     if not re.fullmatch(r"[a-z0-9_.]{3,20}", username):
-        return False, "Username 3 se 20 characters ka ho (sirf a-z, 0-9, _ ya .)."
+        return False, "Username must be 3 to 20 characters (letters a-z, digits, _ or . only)."
     if not full_name.strip():
-        return False, "Poora naam likhein."
+        return False, "Please enter your full name."
     if role not in ROLES:
-        return False, "Role chunein."
+        return False, "Please choose a role."
     if len(password) < 6:
-        return False, "Password kam az kam 6 characters ka ho."
+        return False, "Password must be at least 6 characters."
     if db.q("SELECT 1 FROM users WHERE username=?", (username,)):
-        return False, "Yeh username pehle se maujood hai."
+        return False, "This username is already taken."
     salt = os.urandom(16).hex()
     db.run("INSERT INTO users(username,full_name,role,salt,pw_hash,created) VALUES(?,?,?,?,?,?)",
            (username, full_name.strip(), role, salt, _hash(password, salt), str(date.today())))
-    return True, "Account ban gaya. Ab login karein."
+    return True, "Account created. You can now log in."
 
 def login(username, password):
     rows = db.q("SELECT * FROM users WHERE username=?", (username.strip().lower(),))
