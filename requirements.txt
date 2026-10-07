@@ -1,0 +1,7 @@
+streamlit
+web3
+eth-tester
+py-evm
+qrcode[pil]
+pandas
+plotly
